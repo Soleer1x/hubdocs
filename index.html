@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HubDocs — Documentos Inteligentes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fa;
+      --border: rgba(0,0,0,0.07);
+      --border-med: rgba(0,0,0,0.12);
+      --text: #0f0f0f;
+      --muted: #6B7280;
+      --muted-2: #9CA3AF;
+      --accent:   #F97316;
+      --accent-h: #EA580C;
+      --accent-light: #FFEDD5;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.05);
+      --shadow-hover: 0 12px 48px rgba(249,115,22,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 62px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 36px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 800; font-size: 1.08rem; text-decoration: none;
+      color: var(--text); letter-spacing: -0.02em;
+    }
+    .logo-mark {
+      width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: .75rem;
+    }
+    .nav-links { display: flex; gap: 30px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .83rem; font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-acts { display: flex; gap: 8px; }
+    .btn-ghost {
+      padding: 6px 15px; font-size: .78rem; font-weight: 600; color: var(--muted);
+      background: transparent; border: 1px solid var(--border-med); border-radius: 8px;
+      cursor: pointer; text-decoration: none; transition: all .2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+    .btn-prim {
+      padding: 6px 16px; font-size: .78rem; font-weight: 700; color: #fff;
+      background: var(--accent); border: none; border-radius: 8px;
+      cursor: pointer; text-decoration: none; transition: all .25s;
+    }
+    .btn-prim:hover { background: var(--accent-h); transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding: 100px 0 60px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -160px; right: -120px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 32px;
+      display: grid; grid-template-columns: 1fr 1.6fr; /* ainda mais largo para o PDF */
+      gap: 40px; align-items: center;
+      position: relative; z-index: 1; width: 100%;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid rgba(249,115,22,.18); border-radius: 50px;
+      padding: 5px 13px; margin-bottom: 24px;
+    }
+    .eyebrow-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); animation: edot 2s infinite;
+    }
+    @keyframes edot { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    h1.htitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2.6rem, 4.2vw, 4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+    h1.htitle em { font-style: normal; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 440px;
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px;
+    }
+    .bhero-red {
+      padding: 15px 30px; font-size: .92rem; font-weight: 700;
+      border-radius: var(--radius-sm); background: var(--accent); color: #fff;
+      border: none; cursor: pointer; display: inline-flex; align-items: center;
+      gap: 8px; text-decoration: none; transition: all .3s;
+      box-shadow: 0 4px 20px rgba(249,115,22,.25);
+    }
+    .bhero-red:hover { background: var(--accent-h); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(249,115,22,.30); }
+    .bhero-out {
+      padding: 15px 28px; font-size: .92rem; font-weight: 600;
+      border-radius: var(--radius-sm); background: transparent;
+      color: var(--muted); border: 1.5px solid var(--border-med);
+      cursor: pointer; display: inline-flex; align-items: center;
+      gap: 8px; text-decoration: none; transition: all .3s;
+    }
+    .bhero-out:hover { color: var(--text); border-color: var(--accent); }
+
+    .hero-proof {
+      display: flex; gap: 32px; align-items: center;
+    }
+    .proof-item { display: flex; flex-direction: column; }
+    .proof-num {
+      font-size: 1.5rem; font-weight: 800; color: var(--text);
+      letter-spacing: -0.04em; line-height: 1;
+    }
+    .proof-lbl { font-size: .71rem; color: var(--muted); font-weight: 500; margin-top: 3px; }
+    .proof-sep { width: 1px; height: 36px; background: var(--border-med); }
+
+    /* STUDIO */
+    .studio-wrapper {
+      position: relative;
+      animation: floatD 6s ease-in-out infinite;
+    }
+    @keyframes floatD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .studio-card {
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .studio-topbar {
+      background: #fafafa;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .studio-dots { display: flex; gap: 6px; }
+    .studio-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .studio-dot.r { background: #ff5f57; }
+    .studio-dot.y { background: #febc2e; }
+    .studio-dot.g { background: #28c840; }
+    .studio-title {
+      font-size: .75rem; font-weight: 700; color: var(--text);
+      margin-left: 8px; letter-spacing: -0.01em;
+    }
+    .studio-badge {
+      margin-left: auto; background: var(--accent-light);
+      color: var(--accent); font-size: .62rem; font-weight: 800;
+      padding: 3px 10px; border-radius: 50px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .studio-badge i { font-size: .55rem; }
+
+    .studio-body {
+      display: flex;
+      min-height: 420px;
+    }
+
+    /* Painel esquerdo mais estreito */
+    .studio-prompt-panel {
+      width: 28%;
+      border-right: 1px solid rgba(0,0,0,0.06);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      background: #fdfdfd;
+    }
+    .prompt-label {
+      font-size: .6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--muted); margin-bottom: 10px;
+    }
+    .prompt-chat {
+      flex: 1; display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .prompt-msg {
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px; padding: 8px 10px;
+      font-size: .6rem; color: var(--text); line-height: 1.5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .prompt-msg.user {
+      background: var(--accent-light); border-color: rgba(249,115,22,.15);
+      align-self: flex-end; max-width: 90%;
+    }
+    .prompt-msg.ai {
+      background: #fff; border-color: rgba(0,0,0,0.08);
+      align-self: flex-start; max-width: 90%;
+      display: flex; align-items: flex-start; gap: 6px;
+    }
+    .ai-dot-icon {
+      width: 18px; height: 18px; border-radius: 6px;
+      background: var(--accent); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ai-dot-icon i { color: #fff; font-size: .45rem; }
+    .prompt-input-row {
+      display: flex; gap: 6px;
+    }
+    .prompt-input {
+      flex: 1; border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 8px; padding: 6px 10px;
+      font-size: .6rem; font-family: 'Inter', sans-serif;
+      background: #fff; outline: none;
+      transition: border-color .2s;
+    }
+    .prompt-input:focus { border-color: var(--accent); }
+    .prompt-send {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--accent); border: none; color: #fff;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: all .2s;
+    }
+    .prompt-send:hover { background: var(--accent-h); }
+
+    /* Painel direito - PREVIEW MAIS LARGO e com conteúdo MENOR */
+    .studio-preview-panel {
+      flex: 1;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+    .preview-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .preview-doc-title {
+      font-size: .7rem; font-weight: 800; color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .preview-badge {
+      font-size: .5rem; font-weight: 700; padding: 2px 10px;
+      border-radius: 50px; background: #f0f0f0; color: #333;
+      display: flex; align-items: center; gap: 4px;
+      border: 1px solid #ddd;
+    }
+    .preview-badge i { font-size: .4rem; }
+
+    /* ── RECIBO MAIS LARGO E MAIS COMPACTO ── */
+    .preview-content {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 14px 16px;
+      font-size: .58rem; /* menor */
+      color: #111;
+      line-height: 1.6;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      width: 100%;
+    }
+
+    .recibo-header {
+      text-align: center;
+      border-bottom: 1.5px solid #000;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .recibo-header .recibo-title {
+      font-size: .9rem;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .recibo-header .recibo-sub {
+      font-size: .5rem;
+      color: #444;
+      margin-top: 0;
+      font-weight: 500;
+    }
+    .recibo-num {
+      text-align: right;
+      font-size: .5rem;
+      color: #555;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .recibo-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .recibo-row .label {
+      font-weight: 700;
+      color: #111;
+      font-size: .55rem;
+    }
+    .recibo-row .value {
+      color: #222;
+      font-size: .55rem;
+      font-weight: 500;
+    }
+    .recibo-destaque {
+      background: #f5f5f5;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 3px solid #000;
+    }
+    .recibo-destaque .label {
+      font-weight: 700;
+      font-size: .6rem;
+      color: #111;
+    }
+    .recibo-destaque .value {
+      font-weight: 900;
+      font-size: .85rem;
+      color: #000;
+    }
+    .recibo-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: .48rem;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 6px;
+    }
+    .recibo-assinatura {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .recibo-assinatura .ass-box {
+      flex: 1;
+      text-align: center;
+      border-top: 1px solid #000;
+      padding-top: 5px;
+      font-size: .5rem;
+      color: #333;
+      font-weight: 600;
+    }
+    .cursor-blink {
+      display: inline-block;
+      width: 4px;
+      height: 10px;
+      background: #000;
+      border-radius: 2px;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .highlight-clause {
+      background: none;
+      padding: 1px 2px;
+      border-radius: 2px;
+      font-weight: 700;
+      color: #000;
+      border-bottom: 1px dotted #333;
+    }
+    /* detalhes extras menores */
+    .recibo-detail {
+      font-size: .5rem;
+      color: #333;
+      margin: 3px 0;
+    }
+
+    /* Tags flutuantes */
+    .hero-tag {
+      position: absolute; right: -20px; top: -18px;
+      background: #fff; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      padding: 10px 15px;
+      display: flex; align-items: center; gap: 10px;
+      animation: popIn .6s ease .4s both; z-index: 2;
+    }
+    @keyframes popIn { from{opacity:0;transform:scale(.9) translateY(8px)} to{opacity:1;transform:scale(1) translateY(0)} }
+    .hero-tag-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: #ECFDF5; display: flex; align-items: center; justify-content: center;
+    }
+    .hero-tag-icon i { color: #059669; font-size: .85rem; }
+    .hero-tag-text .ht-top { font-size: .7rem; font-weight: 700; color: var(--text); }
+    .hero-tag-text .ht-bot { font-size: .62rem; color: var(--muted); }
+
+    .hero-tag2 {
+      position: absolute; left: -24px; bottom: 40px;
+      background: #fff; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      padding: 10px 15px;
+      display: flex; align-items: center; gap: 10px;
+      animation: popIn .6s ease .7s both; z-index: 2;
+    }
+    .hero-tag2-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--accent-light); display: flex; align-items: center; justify-content: center;
+    }
+    .hero-tag2-icon i { color: var(--accent); font-size: .85rem; }
+
+    /* SECTIONS */
+    .section { padding: 80px 0; }
+    .slabel {
+      font-size: .69rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--accent); margin-bottom: 11px;
+    }
+    .stitle {
+      font-size: clamp(1.8rem, 2.8vw, 2.7rem);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.1; margin-bottom: 15px; color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+    .stitle span { color: var(--accent); }
+    .sdesc { font-size: .97rem; color: var(--muted); max-width: 480px; line-height: 1.7; }
+    .sheader { margin-bottom: 46px; }
+
+    /* STEPS */
+    .sgrid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative;
+    }
+    .sgrid::before {
+      content: ''; position: absolute; top: 27px; left: 12.5%; right: 12.5%;
+      height: 1px; background: var(--border-med); z-index: 0;
+    }
+    .step { text-align: center; padding: 0 14px; position: relative; z-index: 1; }
+    .step-num {
+      width: 54px; height: 54px; border-radius: 50%; background: #fff;
+      border: 2px solid var(--border-med);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .95rem; color: var(--accent);
+      margin: 0 auto 14px; transition: all .3s;
+    }
+    .step:hover .step-num { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 6px rgba(249,115,22,.07); }
+    .step h4 { font-size: .88rem; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+    .step p { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+
+    /* PRICING */
+    .pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+    .plan {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 30px 26px; transition: all .3s; display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+    .plan:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.06); }
+    .plan.feat { border: 2px solid var(--accent); box-shadow: 0 8px 32px rgba(249,115,22,.08); }
+    .plan.feat:hover { box-shadow: 0 16px 56px rgba(249,115,22,.15); }
+    .plan-strip { height: 4px; width: 38px; background: var(--accent); border-radius: 4px; margin-bottom: 18px; }
+    .plan.feat .plan-strip { width: 100%; }
+    .plan-badge {
+      display: inline-block; font-size: .59rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em; padding: 3px 11px;
+      border-radius: 50px; background: var(--accent-light); color: var(--accent);
+      margin-bottom: 14px; align-self: flex-start;
+    }
+    .plan.feat .plan-badge { background: var(--accent); color: #fff; }
+    .plan-name { font-size: 1.08rem; font-weight: 800; margin-bottom: 3px; color: var(--text); }
+    .plan-price { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; color: var(--text); margin-top: 3px; }
+    .plan-price span { font-size: .95rem; font-weight: 500; color: var(--muted); }
+    .plan-period { font-size: .78rem; color: var(--muted); margin-bottom: 18px; }
+    .plan-div { border: none; border-top: 1px solid var(--border); margin: 14px 0 18px; }
+    .plan-feats { list-style: none; margin-bottom: 26px; flex-grow: 1; }
+    .plan-feats li { display: flex; align-items: center; gap: 9px; font-size: .83rem; padding: 5px 0; color: var(--muted); }
+    .plan-feats li.on { color: var(--text); }
+    .plan-feats .ck { color: var(--accent); flex-shrink: 0; font-weight: 700; }
+    .plan-feats .cx { color: var(--muted-2); flex-shrink: 0; }
+    .plan-btn {
+      width: 100%; padding: 13px; font-size: .83rem; font-weight: 700;
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: transparent; color: var(--text); cursor: pointer;
+      transition: all .25s; margin-top: auto;
+    }
+    .plan-btn:hover { background: var(--surface); }
+    .plan.feat .plan-btn { background: var(--accent); color: #fff; border: none; }
+    .plan.feat .plan-btn:hover { background: var(--accent-h); box-shadow: 0 8px 24px rgba(249,115,22,.22); transform: translateY(-1px); }
+
+    /* TESTIMONIALS */
+    .tcarousel { position: relative; overflow: hidden; border-radius: var(--radius); }
+    .ttrack { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+    .tslide { min-width: 100%; padding: 0 4px; }
+    .tcard { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 34px 30px; box-shadow: var(--shadow); transition: all .3s; margin: 0 8px; }
+    .tcard:hover { border-color: var(--accent); box-shadow: var(--shadow-hover); }
+    .tstars { color: var(--accent); font-size: .78rem; letter-spacing: 3px; margin-bottom: 14px; }
+    .ttext { font-size: .97rem; color: var(--text); line-height: 1.8; margin-bottom: 18px; font-style: italic; opacity: .85; }
+    .tauthor { display: flex; align-items: center; gap: 11px; }
+    .tavatar {
+      width: 38px; height: 38px; border-radius: 50%; background: var(--accent-light);
+      border: 1px solid rgba(249,115,22,.2); display: flex; align-items: center;
+      justify-content: center; font-weight: 800; font-size: .68rem; color: var(--accent);
+    }
+    .tname { font-size: .83rem; font-weight: 700; color: var(--text); }
+    .trole { font-size: .73rem; color: var(--muted); }
+    .tcontrols { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 28px; }
+    .tbtn {
+      width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border);
+      background: #fff; color: var(--text); cursor: pointer; transition: all .25s;
+      display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow);
+    }
+    .tbtn:hover { border-color: var(--accent); color: var(--accent); }
+    .tdots { display: flex; gap: 7px; }
+    .tdot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-med); cursor: pointer; transition: all .3s; border: none; padding: 0; }
+    .tdot.on { background: var(--accent); width: 26px; border-radius: 5px; }
+
+    /* FAQ */
+    .faqlist { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .faqitem { border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fff; overflow: hidden; transition: all .3s; cursor: pointer; box-shadow: var(--shadow); }
+    .faqitem:hover { border-color: var(--border-med); }
+    .faqitem.open { border-color: var(--accent); box-shadow: var(--shadow-hover); }
+    .faqq { display: flex; justify-content: space-between; align-items: center; padding: 19px 22px; font-weight: 700; font-size: .93rem; color: var(--text); user-select: none; gap: 14px; }
+    .faqq i { color: var(--muted); transition: transform .3s; font-size: .88rem; flex-shrink: 0; }
+    .faqitem.open .faqq i { transform: rotate(180deg); color: var(--accent); }
+    .faqa { max-height: 0; padding: 0 22px; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1), padding .4s; color: var(--muted); font-size: .88rem; line-height: 1.7; }
+    .faqitem.open .faqa { max-height: 260px; padding: 0 22px 22px; }
+
+    /* CTA */
+    .cta { background: var(--accent); padding: 88px 28px; text-align: center; }
+    .cta h2 { font-size: clamp(1.9rem, 3.4vw, 3.2rem); font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+    .cta p { font-size: .97rem; color: rgba(255,255,255,.8); max-width: 460px; margin: 0 auto 32px; line-height: 1.7; }
+    .cta-acts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .bcta { padding: 13px 28px; font-size: .88rem; font-weight: 700; border-radius: var(--radius-sm); border: none; cursor: pointer; transition: all .3s; display: inline-flex; align-items: center; gap: 7px; }
+    .bcta-w { background: #fff; color: var(--accent); }
+    .bcta-w:hover { background: #f3f4f6; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,.14); }
+    .bcta-ol { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.3); }
+    .bcta-ol:hover { background: rgba(255,255,255,.1); border-color: #fff; }
+    .cta-fine { margin-top: 22px; display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; font-size: .77rem; color: rgba(255,255,255,.5); }
+    .cta-fine span { display: flex; align-items: center; gap: 4px; }
+
+    /* FOOTER */
+    footer { background: #111; padding: 54px 28px 26px; }
+    .fgridf { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 44px; margin-bottom: 36px; }
+    .fbrand .logo { color: #fff; }
+    .fbrand .logo-mark { background: var(--accent); }
+    .fbrand p { font-size: .83rem; color: rgba(255,255,255,.38); line-height: 1.7; margin-top: 11px; max-width: 250px; }
+    .fcol h5 { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.28); margin-bottom: 14px; }
+    .fcol ul { list-style: none; }
+    .fcol ul li { margin-bottom: 9px; }
+    .fcol ul li a { font-size: .83rem; color: rgba(255,255,255,.38); text-decoration: none; transition: color .2s; font-weight: 500; }
+    .fcol ul li a:hover { color: #fff; }
+    .fbottom { border-top: 1px solid rgba(255,255,255,.06); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .fcopy { font-size: .77rem; color: rgba(255,255,255,.24); }
+    .flegal { display: flex; gap: 22px; }
+    .flegal a { font-size: .77rem; color: rgba(255,255,255,.24); text-decoration: none; transition: color .2s; }
+    .flegal a:hover { color: rgba(255,255,255,.5); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .studio-wrapper { max-width: 600px; margin: 0 auto; }
+      .studio-prompt-panel { width: 40%; }
+      .sgrid { grid-template-columns: repeat(2, 1fr); }
+      .sgrid::before { display: none; }
+      .fgridf { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media(max-width:768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .studio-prompt-panel { width: 100%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+      .studio-body { flex-direction: column; }
+      .pgrid { grid-template-columns: 1fr; max-width: 390px; margin: 0 auto; }
+      .fgridf { grid-template-columns: 1fr; gap: 28px; }
+      .sgrid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .hero-proof { flex-wrap: wrap; gap: 14px; }
+      .hero-tag, .hero-tag2 { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo"><span class="logo-mark">H</span>HubDocs</a>
+    <ul class="nav-links">
+      <li><a href="#features">Recursos</a></li>
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#planos">Planos</a></li>
+      <li><a href="#depoimentos">Clientes</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-acts">
+      <a href="#" class="btn-ghost">Entrar</a>
+      <a href="#" class="btn-prim">Começar Grátis →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <!-- LADO ESQUERDO -->
+      <div>
+        <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Seus Documentos de empresa em outro nível!</div>
+        <h1 class="htitle"> 
+          SEUS <em>DOCUMENTOS,</em><br/>
+          <em>PRONTOS</em> EM<br/>
+          SEGUNDOS.
+        </h1>
+        <p class="hero-sub">Descreva o que precisa em linguagem natural. Nossa IA cria contratos, propostas e relatórios profissionais com assinatura digital integrada — tudo em uma plataforma feita para empresas sérias.</p>
+        <div class="hero-btns">
+          <a href="#" class="bhero-red">Começar Grátis <i class="fas fa-arrow-right"></i></a>
+          <a href="#" class="bhero-out"><i class="fas fa-play"></i> Ver Demo</a>
+        </div>
+        <div class="hero-proof">
+          <div class="proof-item"><span class="proof-num">12.8k</span><span class="proof-lbl">Empresas ativas</span></div>
+          <div class="proof-sep"></div>
+          <div class="proof-item"><span class="proof-num">4.8M</span><span class="proof-lbl">Docs gerados</span></div>
+          <div class="proof-sep"></div>
+          <div class="proof-item"><span class="proof-num">99.9%</span><span class="proof-lbl">Uptime</span></div>
+        </div>
+      </div>
+
+      <!-- LADO DIREITO: STUDIO -->
+      <div class="studio-wrapper">
+
+        <div class="hero-tag">
+          <div class="hero-tag-icon"><i class="fas fa-check"></i></div>
+          <div class="hero-tag-text">
+            <div class="ht-top">Assinado com sucesso</div>
+            <div class="ht-bot">Recibo_Funcionario_2026.pdf</div>
+          </div>
+        </div>
+
+        <div class="hero-tag2">
+          <div class="hero-tag2-icon"><i class="fas fa-bolt"></i></div>
+          <div class="hero-tag-text">
+            <div class="ht-top">IA gerou em 9s</div>
+            <div class="ht-bot">Recibo de Pagamento</div>
+          </div>
+        </div>
+
+        <div class="studio-card">
+          <div class="studio-topbar">
+            <div class="studio-dots">
+              <div class="studio-dot r"></div>
+              <div class="studio-dot y"></div>
+              <div class="studio-dot g"></div>
+            </div>
+            <div class="studio-title">AI Document Studio</div>
+            <div class="studio-badge"><i class="fas fa-circle" style="font-size:.4rem;color:#059669;"></i> Ao vivo</div>
+          </div>
+
+          <div class="studio-body">
+
+            <div class="studio-prompt-panel">
+              <div class="prompt-label">💬 Descreva seu documento</div>
+              <div class="prompt-chat">
+                <div class="prompt-msg user">
+                  Preciso de um recibo de pagamento para funcionário, com valor de R$ 4.250,00 referente ao salário de maio/2026.
+                </div>
+                <div class="prompt-msg ai">
+                  <div class="ai-dot-icon"><i class="fas fa-robot"></i></div>
+                  <span>Gerando recibo profissional...</span>
+                </div>
+              </div>
+              <div class="prompt-input-row">
+                <input type="text" class="prompt-input" placeholder="Ex: Recibo de férias..." />
+                <button class="prompt-send"><i class="fas fa-paper-plane"></i></button>
+              </div>
+            </div>
+
+            <div class="studio-preview-panel">
+              <div class="preview-header">
+                <div class="preview-doc-title">📄 RECIBO_FUNCIONARIO_MAIO2026.pdf</div>
+                <div class="preview-badge"><i class="fas fa-check-circle"></i> Pronto</div>
+              </div>
+
+              <!-- RECIBO MAIS LARGO E MAIS COMPACTO -->
+              <div class="preview-content">
+                <div class="recibo-header">
+                  <div class="recibo-title">RECIBO DE PAGAMENTO</div>
+                  <div class="recibo-sub">Documento comprobatório de quitação salarial</div>
+                </div>
+
+                <div class="recibo-num">Nº: 0023/2026</div>
+
+                <div class="recibo-row">
+                  <span class="label">Empresa:</span>
+                  <span class="value">HubDocs Tecnologia S/A</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">CNPJ:</span>
+                  <span class="value">12.345.678/0001-99</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">Funcionário:</span>
+                  <span class="value">Carlos Eduardo Mendes</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">CPF:</span>
+                  <span class="value">123.456.789-00</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">Cargo:</span>
+                  <span class="value">Desenvolvedor Pleno</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">Competência:</span>
+                  <span class="value">Maio / 2026</span>
+                </div>
+                <div class="recibo-row">
+                  <span class="label">Data do Pagamento:</span>
+                  <span class="value">05/06/2026</span>
+                </div>
+
+                <div class="recibo-destaque">
+                  <span class="label">💳 Valor Total Líquido</span>
+                  <span class="value">R$ 4.250,00</span>
+                </div>
+
+                <div class="recibo-detail">
+                  <strong>Forma de Pagamento:</strong> Transferência Bancária (PIX)
+                </div>
+                <div class="recibo-detail">
+                  <strong>Banco:</strong> Nubank | <strong>Agência:</strong> 0001 | <strong>Conta:</strong> 12345-6
+                </div>
+
+                <div style="background:#f8f8f8;padding:5px 8px;border-radius:3px;font-size:.5rem;color:#222;margin:4px 0 6px;border:1px solid #eee;">
+                  <strong>Descrição:</strong> Pagamento referente ao salário de maio/2026, incluindo horas extras e benefícios.
+                </div>
+
+                <div class="recibo-assinatura">
+                  <div class="ass-box">________________________<br/><strong>Empresa</strong><br/>HubDocs S/A</div>
+                  <div class="ass-box">________________________<br/><strong>Funcionário</strong><br/>Carlos E. Mendes</div>
+                </div>
+
+                <div class="recibo-footer">
+                  <span>Gerado em 05/06/2026</span>
+                  <span>Cód.: <span class="highlight-clause">#HD-2026-0023</span></span>
+                </div>
+                <span class="cursor-blink"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="como-funciona">
+    <div class="container">
+      <div class="sheader reveal" style="text-align:center;">
+        <p class="slabel">Como funciona</p>
+        <h2 class="stitle">Simples do início<br/><span>ao fim</span></h2>
+        <p class="sdesc" style="margin:0 auto;">Em menos de 2 minutos você tem um documento profissional pronto e assinado.</p>
+      </div>
+      <div class="sgrid reveal">
+        <div class="step"><div class="step-num">1</div><h4>Descreva o documento</h4><p>Escreva em linguagem natural o que precisa. Nossa IA entende o contexto do seu negócio.</p></div>
+        <div class="step"><div class="step-num">2</div><h4>IA gera o rascunho</h4><p>Em segundos, um documento completo e profissional é criado, já adaptado ao seu setor.</p></div>
+        <div class="step"><div class="step-num">3</div><h4>Revise e personalize</h4><p>Ajuste o que precisar com nosso editor inteligente. Adicione cláusulas e dados automaticamente.</p></div>
+        <div class="step"><div class="step-num">4</div><h4>Assine e compartilhe</h4><p>Assine digitalmente com validade jurídica e envie para os signatários em um clique.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="planos">
+    <div class="container">
+      <div class="sheader reveal">
+        <p class="slabel">Planos e preços</p>
+        <h2 class="stitle">Escale conforme<br/><span>seu negócio cresce</span></h2>
+        <p class="sdesc">Comece grátis. Sem cartão de crédito. Cancele quando quiser.</p>
+      </div>
+      <div class="pgrid">
+        <div class="plan reveal">
+          <div class="plan-strip"></div>
+          <div class="plan-badge">Gratuito</div>
+          <div class="plan-name">Free</div>
+          <div class="plan-price">R$ 0</div>
+          <div class="plan-period">para sempre</div>
+          <hr class="plan-div"/>
+          <ul class="plan-feats">
+            <li class="on"><span class="ck">✓</span> 100 documentos/mês</li>
+            <li class="on"><span class="ck">✓</span> 1 usuário</li>
+            <li class="on"><span class="ck">✓</span> 30 templates</li>
+            <li class="on"><span class="ck">✓</span> Assinatura digital</li>
+            <li><span class="cx">✗</span> IA Avançada</li>
+            <li><span class="cx">✗</span> Integrações</li>
+          </ul>
+          <button class="plan-btn">Começar Grátis</button>
+        </div>
+        <div class="plan feat reveal">
+          <div class="plan-strip"></div>
+          <div class="plan-badge">Mais Popular</div>
+          <div class="plan-name">Básico</div>
+          <div class="plan-price">R$ 149</div>
+          <div class="plan-period">por mês</div>
+          <hr class="plan-div"/>
+          <ul class="plan-feats">
+            <li class="on"><span class="ck">✓</span> 5.000 documentos/mês</li>
+            <li class="on"><span class="ck">✓</span> 5 usuários</li>
+            <li class="on"><span class="ck">✓</span> 150+ templates</li>
+            <li class="on"><span class="ck">✓</span> IA Avançada</li>
+            <li class="on"><span class="ck">✓</span> Integrações CRM</li>
+            <li class="on"><span class="ck">✓</span> Suporte prioritário</li>
+          </ul>
+          <button class="plan-btn">Começar Agora</button>
+        </div>
+        <div class="plan reveal">
+          <div class="plan-strip"></div>
+          <div class="plan-badge">Ilimitado</div>
+          <div class="plan-name">Profissional</div>
+          <div class="plan-price">R$ 399</div>
+          <div class="plan-period">por mês</div>
+          <hr class="plan-div"/>
+          <ul class="plan-feats">
+            <li class="on"><span class="ck">✓</span> Documentos <strong>ilimitados</strong></li>
+            <li class="on"><span class="ck">✓</span> Usuários <strong>ilimitados</strong></li>
+            <li class="on"><span class="ck">✓</span> Templates personalizados</li>
+            <li class="on"><span class="ck">✓</span> IA com fine-tuning</li>
+            <li class="on"><span class="ck">✓</span> API + Webhooks</li>
+            <li class="on"><span class="ck">✓</span> Gerente dedicado + 24/7</li>
+          </ul>
+          <button class="plan-btn">Falar com Vendas</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="depoimentos">
+    <div class="container">
+      <div class="sheader reveal">
+        <p class="slabel">Depoimentos</p>
+        <h2 class="stitle">O que nossos<br/><span>clientes dizem</span></h2>
+        <p class="sdesc">Histórias reais de quem transformou sua gestão documental.</p>
+      </div>
+      <div class="tcarousel reveal">
+        <div class="ttrack" id="ttrack">
+          <div class="tslide"><div class="tcard">
+            <div class="tstars">★★★★★</div>
+            <p class="ttext">"Contratos que levavam 3 horas agora ficam prontos em 20 segundos. A economia de tempo e a qualidade são absurdas. Nossa equipe jurídica ficou impressionada."</p>
+            <div class="tauthor"><div class="tavatar">AV</div><div><div class="tname">Ana Vitória Lima</div><div class="trole">Head Jurídico · TechCorp</div></div></div>
+          </div></div>
+          <div class="tslide"><div class="tcard">
+            <div class="tstars">★★★★★</div>
+            <p class="ttext">"Integramos ao CRM e as propostas são geradas automaticamente. Fechamos 40% mais negócios no primeiro mês. O ROI foi imediato."</p>
+            <div class="tauthor"><div class="tavatar">RG</div><div><div class="tname">Rafael Gonçalves</div><div class="trole">CEO · Construmaster</div></div></div>
+          </div></div>
+          <div class="tslide"><div class="tcard">
+            <div class="tstars">★★★★★</div>
+            <p class="ttext">"Eliminamos 100% do papel nos processos de contratação. Simples, rápido e com total segurança jurídica. O suporte em português faz a diferença."</p>
+            <div class="tauthor"><div class="tavatar">MC</div><div><div class="tname">Mariana Costa</div><div class="trole">Diretora de RH · MediGroup</div></div></div>
+          </div></div>
+          <div class="tslide"><div class="tcard">
+            <div class="tstars">★★★★★</div>
+            <p class="ttext">"A API é fantástica. Integramos com nosso ERP e agora todos os contratos são gerados automaticamente. Reduzimos erros e ganhamos agilidade."</p>
+            <div class="tauthor"><div class="tavatar">PL</div><div><div class="tname">Paulo Lemos</div><div class="trole">CTO · Construtora Alpha</div></div></div>
+          </div></div>
+        </div>
+        <div class="tcontrols">
+          <button class="tbtn" id="tprev"><i class="fas fa-chevron-left"></i></button>
+          <div class="tdots">
+            <span class="tdot on"></span><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
+          </div>
+          <button class="tbtn" id="tnext"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="sheader reveal" style="text-align:center;">
+        <p class="slabel">Perguntas frequentes</p>
+        <h2 class="stitle">Temos as<br/><span>respostas</span></h2>
+      </div>
+      <div class="faqlist reveal">
+        <div class="faqitem open">
+          <div class="faqq"><span>Os documentos têm validade jurídica?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="faqa">Sim. Com assinatura digital integrada, possuem validade plena no Brasil e em 40+ países, em conformidade com a MP 2.200-2 e a LGPD.</div>
+        </div>
+        <div class="faqitem">
+          <div class="faqq"><span>Posso integrar com meu sistema?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="faqa">Sim. Oferecemos API REST, SDKs e integrações nativas com Salesforce, HubSpot, SAP, TOTVS e muitos outros sistemas.</div>
+        </div>
+        <div class="faqitem">
+          <div class="faqq"><span>Meus dados ficam seguros?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="faqa">Totalmente. Criptografia AES-256, servidores no Brasil, conformidade LGPD e certificação SOC 2 Type II. Auditoria de segurança anual.</div>
+        </div>
+        <div class="faqitem">
+          <div class="faqq"><span>Como funciona o teste grátis?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="faqa">14 dias de acesso completo ao plano Pro, sem cartão de crédito. Ao final, escolha o plano ideal ou cancele sem nenhum custo.</div>
+        </div>
+        <div class="faqitem">
+          <div class="faqq"><span>A IA entende documentos do meu setor?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="faqa">Sim. Nossa IA foi treinada com milhões de documentos em português, incluindo legislação brasileira, contratos comerciais, trabalhistas, médicos, imobiliários e muito mais.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="container">
+      <h2>Comece a gerar documentos<br/>profissionais hoje.</h2>
+      <p>Junte-se a 12.800 empresas que já economizam horas por semana. 14 dias grátis, sem cartão de crédito.</p>
+      <div class="cta-acts">
+        <button class="bcta bcta-w">Criar conta grátis <i class="fas fa-arrow-right"></i></button>
+        <button class="bcta bcta-ol"><i class="fas fa-comment"></i> Falar com especialista</button>
+      </div>
+      <div class="cta-fine">
+        <span><i class="fas fa-check-circle"></i> 14 dias grátis</span>
+        <span><i class="fas fa-check-circle"></i> Sem cartão de crédito</span>
+        <span><i class="fas fa-check-circle"></i> Cancele quando quiser</span>
+        <span><i class="fas fa-check-circle"></i> Suporte em português</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="fgridf">
+        <div class="fbrand">
+          <a href="#" class="logo"><span class="logo-mark">H</span>HubDocs</a>
+          <p>A plataforma de documentos inteligente para empresas que valorizam eficiência, segurança e profissionalismo.</p>
+        </div>
+        <div class="fcol">
+          <h5>Produto</h5>
+          <ul>
+            <li><a href="#">Funcionalidades</a></li>
+            <li><a href="#">Templates</a></li>
+            <li><a href="#">Integrações</a></li>
+            <li><a href="#">Assinatura Digital</a></li>
+            <li><a href="#">API</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h5>Empresa</h5>
+          <ul>
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Carreiras</a></li>
+            <li><a href="#">Parceiros</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h5>Suporte</h5>
+          <ul>
+            <li><a href="#">Central de Ajuda</a></li>
+            <li><a href="#">Documentação</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Privacidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="fbottom">
+        <div class="fcopy">© 2026 HubDocs. Todos os direitos reservados.</div>
+        <div class="flegal">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos de Uso</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // CAROUSEL
+    const track = document.getElementById('ttrack');
+    const dots = document.querySelectorAll('.tdot');
+    let cur = 0;
+    function goTo(i) {
+      if (i < 0) i = dots.length - 1;
+      if (i >= dots.length) i = 0;
+      cur = i;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      dots.forEach((d, j) => d.classList.toggle('on', j === cur));
+    }
+    document.getElementById('tprev').onclick = () => goTo(cur - 1);
+    document.getElementById('tnext').onclick = () => goTo(cur + 1);
+    dots.forEach((d, i) => d.onclick = () => goTo(i));
+    setInterval(() => goTo(cur + 1), 6000);
+
+    // FAQ
+    document.querySelectorAll('.faqitem').forEach(item => {
+      item.querySelector('.faqq').addEventListener('click', () => {
+        document.querySelectorAll('.faqitem').forEach(x => { if (x !== item) x.classList.remove('open'); });
+        item.classList.toggle('open');
+      });
+    });
+
+    // SCROLL REVEAL
+    const obs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting) x.target.classList.add('in'); });
+    }, { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
