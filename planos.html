@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HubDocs — Escolha seu Plano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #F97316;
+            --orange-h: #EA580C;
+            --orange-d: #C2410C;
+            --orange-light: #FFEDD5;
+            --orange-pale: #FFF7ED;
+            --white: #ffffff;
+            --text: #0f0f0f;
+            --muted: #6B7280;
+            --muted2: #9CA3AF;
+            --border: rgba(0, 0, 0, 0.07);
+            --border-med: rgba(0, 0, 0, 0.12);
+            --r: 16px;
+            --r-sm: 10px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 16px 48px rgba(249, 115, 22, 0.10);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fafafa;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--orange);
+            border-radius: 4px;
+        }
+
+        /* ───── NAVBAR ───── */
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 36px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 900;
+            font-size: 1.08rem;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.03em;
+        }
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            background: var(--orange);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 900;
+            font-size: .76rem;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, .35);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .nav-link {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-link:hover {
+            color: var(--text);
+        }
+        .nav-link i {
+            margin-right: 4px;
+        }
+        .nav-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--orange-light);
+            border: 2px solid var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .7rem;
+            color: var(--orange);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .nav-avatar:hover {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* ───── CONTAINER ───── */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ───── WELCOME BANNER ───── */
+        .welcome-banner {
+            background: linear-gradient(135deg, #fff 0%, var(--orange-pale) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            text-align: center;
+        }
+        .welcome-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .73rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .step-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .6rem;
+            font-weight: 800;
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        .step-dot.done {
+            background: #22C55E;
+            color: #fff;
+        }
+        .step-dot.active {
+            background: var(--orange);
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, .2);
+        }
+        .step-line {
+            width: 30px;
+            height: 2px;
+            background: #d1d5db;
+            border-radius: 2px;
+        }
+        .step-line.done {
+            background: #22C55E;
+        }
+        .welcome-msg {
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .welcome-msg span {
+            color: var(--orange);
+        }
+
+        /* ───── PAGE HEADER ───── */
+        .page-header {
+            text-align: center;
+            padding: 56px 0 28px;
+        }
+        .page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--orange-light);
+            border: 1px solid rgba(249, 115, 22, .2);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: .65rem;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .page-badge i {
+            font-size: .7rem;
+        }
+        .page-title {
+            font-size: clamp(2rem, 3.2vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        .page-title span {
+            color: var(--orange);
+        }
+        .page-sub {
+            font-size: .95rem;
+            color: var(--muted);
+            max-width: 480px;
+            margin: 0 auto 10px;
+            line-height: 1.7;
+        }
+
+        /* ───── TOGGLE ───── */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+        }
+        .toggle-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--muted);
+            transition: color .2s;
+        }
+        .toggle-label.on {
+            color: var(--text);
+        }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: #d1d5db;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background .3s;
+            flex-shrink: 0;
+        }
+        .toggle-switch.active {
+            background: var(--orange);
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform .3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .15);
+        }
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+        .toggle-badge {
+            background: #22C55E;
+            color: #fff;
+            font-size: .6rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 50px;
+            letter-spacing: .04em;
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        /* ───── PRICING GRID ───── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: stretch;
+            margin-bottom: 48px;
+        }
+        .plan-card {
+            background: #fff;
+            border-radius: var(--r);
+            padding: 32px 26px 28px;
+            box-shadow: var(--shadow);
+            border: 1.5px solid var(--border);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .plan-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 56px rgba(0, 0, 0, 0.08);
+            border-color: #d1d5db;
+        }
+        .plan-card.premium {
+            border: 2.5px solid var(--orange);
+            background: linear-gradient(180deg, #fff 0%, #fffaf5 100%);
+            box-shadow: 0 8px 40px rgba(249, 115, 22, 0.10);
+        }
+        .plan-card.premium:hover {
+            box-shadow: 0 24px 64px rgba(249, 115, 22, 0.18);
+            transform: translateY(-8px);
+        }
+        .plan-strip {
+            height: 4px;
+            width: 40px;
+            background: #d1d5db;
+            border-radius: 4px;
+            margin: 0 auto 16px;
+            transition: all .3s;
+        }
+        .plan-card.premium .plan-strip {
+            width: 80px;
+            background: var(--orange);
+        }
+        .plan-badge {
+            display: inline-block;
+            font-size: .6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: #f3f4f6;
+            color: var(--muted);
+            margin: 0 auto 10px;
+            transition: all .3s;
+        }
+        .premium-badge {
+            background: var(--orange);
+            color: #fff;
+            animation: pulse-badge 2s infinite;
+        }
+        .plan-icon {
+            font-size: 2rem;
+            color: #9ca3af;
+            margin-bottom: 6px;
+            transition: all .3s;
+        }
+        .plan-card.premium .plan-icon {
+            color: var(--orange);
+        }
+        .plan-card:hover .plan-icon {
+            transform: scale(1.1) rotate(-4deg);
+        }
+        .plan-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        .plan-price {
+            font-size: 2.6rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: var(--text);
+            line-height: 1;
+            margin: 6px 0 2px;
+        }
+        .plan-price span {
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--muted);
+        }
+        .plan-period {
+            font-size: .75rem;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+        .plan-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 10px 0 16px;
+        }
+        .plan-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 22px;
+            flex-grow: 1;
+            padding: 0;
+        }
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .82rem;
+            color: var(--text);
+            padding: 7px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        .plan-features li i {
+            width: 18px;
+            text-align: center;
+            font-size: .85rem;
+            flex-shrink: 0;
+        }
+        .plan-features li i.fa-check-circle {
+            color: #22C55E;
+        }
+        .plan-features li i.fa-times-circle {
+            color: #d1d5db;
+        }
+        .plan-features li.disabled {
+            color: var(--muted2);
+        }
+        .plan-features li strong {
+            font-weight: 700;
+            color: var(--text);
+        }
+        .plan-btn {
+            display: block;
+            width: 100%;
+            padding: 13px 20px;
+            font-size: .84rem;
+            font-weight: 700;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--border-med);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+        }
+        .plan-btn:hover {
+            background: #f9fafb;
+            border-color: var(--orange);
+        }
+        .premium-btn {
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 18px rgba(249, 115, 22, 0.30);
+        }
+        .premium-btn:hover {
+            background: var(--orange-h);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.40);
+        }
+
+        /* ───── TRUST BAR ───── */
+        .trust-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+            font-size: .73rem;
+            color: var(--muted2);
+            font-weight: 500;
+        }
+        .trust-bar i {
+            color: var(--orange);
+            margin-right: 4px;
+        }
+
+        /* ───── COMPARISON TABLE ───── */
+        .comparison-section {
+            padding: 40px 0 60px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-title {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 28px;
+            color: var(--text);
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .82rem;
+            box-shadow: var(--shadow);
+            border-radius: var(--r);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px 18px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-table th {
+            background: #fafafa;
+            font-weight: 800;
+            color: var(--text);
+            font-size: .78rem;
+            letter-spacing: -0.01em;
+        }
+        .comparison-table th:first-child {
+            text-align: left;
+            width: 34%;
+        }
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .comparison-table td {
+            color: var(--muted);
+        }
+        .comparison-table .highlight-col {
+            background: #fffaf5;
+            font-weight: 700;
+            color: var(--orange);
+        }
+        .comparison-table .check-orange {
+            color: var(--orange);
+            font-size: .9rem;
+        }
+        .comparison-table .check-green {
+            color: #22C55E;
+            font-size: .9rem;
+        }
+        .comparison-table .dash {
+            color: #d1d5db;
+        }
+
+        /* ───── FAQ ───── */
+        .faq-section {
+            padding: 64px 0;
+        }
+        .faq-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .faq-header h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .faq-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .3s;
+            box-shadow: var(--shadow);
+        }
+        .faq-item:hover {
+            border-color: #d1d5db;
+        }
+        .faq-item.open {
+            border-color: var(--orange);
+            box-shadow: var(--shadow-hover);
+        }
+        .faq-q {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            font-weight: 700;
+            font-size: .9rem;
+            color: var(--text);
+            user-select: none;
+            gap: 14px;
+        }
+        .faq-q i {
+            color: var(--muted);
+            transition: transform .3s;
+            font-size: .85rem;
+            flex-shrink: 0;
+        }
+        .faq-item.open .faq-q i {
+            transform: rotate(180deg);
+            color: var(--orange);
+        }
+        .faq-a {
+            max-height: 0;
+            padding: 0 22px;
+            overflow: hidden;
+            transition: max-height .4s cubic-bezier(.4, 0, .2, 1), padding .4s;
+            color: var(--muted);
+            font-size: .85rem;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 0 22px 20px;
+        }
+
+        /* ───── CTA ───── */
+        .cta-final {
+            background: var(--orange);
+            padding: 70px 28px;
+            text-align: center;
+            color: #fff;
+        }
+        .cta-final h2 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+        .cta-final p {
+            font-size: .95rem;
+            color: rgba(255, 255, 255, .78);
+            max-width: 440px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+        .cta-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-cta-white {
+            padding: 13px 30px;
+            font-size: .88rem;
+            font-weight: 700;
+            border-radius: var(--r-sm);
+            background: #fff;
+            color: var(--orange);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-cta-white:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, .14);
+        }
+        .btn-cta-out {
+            padding: 13px 28px;
+            font-size: .88rem;
+            font-weight: 600;
+            border-radius: var(--r-sm);
+            background: transparent;
+            color: #fff;
+            border: 1.5px solid rgba(255, 255, 255, .35);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-cta-out:hover {
+            background: rgba(255, 255, 255, .1);
+            border-color: #fff;
+        }
+
+        /* ───── FOOTER ───── */
+        footer {
+            background: #111;
+            padding: 48px 28px 24px;
+            margin-top: auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+        .footer-brand .logo {
+            color: #fff;
+        }
+        .footer-brand .logo-mark {
+            background: var(--orange);
+        }
+        .footer-brand p {
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .35);
+            line-height: 1.7;
+            margin-top: 10px;
+            max-width: 240px;
+        }
+        .footer-col h5 {
+            font-size: .65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: rgba(255, 255, 255, .26);
+            margin-bottom: 14px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        .footer-col ul li a {
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .35);
+            text-decoration: none;
+            transition: color .2s;
+            font-weight: 500;
+        }
+        .footer-col ul li a:hover {
+            color: #fff;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-copy {
+            font-size: .74rem;
+            color: rgba(255, 255, 255, .22);
+        }
+        .footer-legal {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-legal a {
+            font-size: .74rem;
+            color: rgba(255, 255, 255, .22);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .footer-legal a:hover {
+            color: rgba(255, 255, 255, .5);
+        }
+
+        /* ───── REVEAL ───── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ───── RESPONSIVE ───── */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+            .plan-card.premium {
+                order: -1;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .comparison-table {
+                font-size: .72rem;
+            }
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 10px;
+            }
+        }
+        @media (max-width: 680px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .plan-card.premium {
+                order: 0;
+            }
+            .navbar {
+                padding: 0 18px;
+            }
+            .nav-link span {
+                display: none;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .comparison-table {
+                font-size: .65rem;
+            }
+            .welcome-steps {
+                gap: 4px;
+            }
+            .step-line {
+                width: 16px;
+            }
+            .trust-bar {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ───── NAVBAR ───── -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">HD</span>
+            HubDocs
+        </a>
+        <div class="nav-right">
+            <a href="index.html" class="nav-link"><i class="fas fa-arrow-left"></i> <span>Voltar</span></a>
+            <div class="nav-avatar" title="Minha conta">JD</div>
+        </div>
+    </nav>
+
+    <!-- ───── WELCOME BANNER ───── -->
+    <div class="welcome-banner">
+        <div class="container">
+            <div class="welcome-steps">
+                <span class="step-indicator">
+                    <span class="step-dot done"><i class="fas fa-check"></i></span> Cadastro
+                </span>
+                <span class="step-line done"></span>
+                <span class="step-indicator">
+                    <span class="step-dot active">2</span> Escolha do plano
+                </span>
+                <span class="step-line"></span>
+                <span class="step-indicator">
+                    <span class="step-dot">3</span> Pagamento
+                </span>
+            </div>
+            <p class="welcome-msg">Bem-vindo, <span>João</span>! 👋 Escolha o plano ideal para começar.</p>
+        </div>
+    </div>
+
+    <!-- ───── PAGE HEADER ───── -->
+    <div class="container">
+        <div class="page-header reveal">
+            <div class="page-badge"><i class="fas fa-crown"></i> Planos & Preços</div>
+            <h1 class="page-title">Escolha o <span>plano perfeito</span><br/>para o seu negócio</h1>
+            <p class="page-sub">Comece com um plano, evolua conforme cresce. Sem surpresas, sem fidelidade. Cancele quando quiser.</p>
+        </div>
+
+        <!-- ───── TOGGLE MENSAL / ANUAL ───── -->
+        <div class="toggle-wrap reveal">
+            <span class="toggle-label on" id="lbl-mensal">Mensal</span>
+            <div class="toggle-switch" id="toggle-switch" onclick="togglePricing()"></div>
+            <span class="toggle-label" id="lbl-anual">Anual</span>
+            <span class="toggle-badge" id="discount-badge">-20%</span>
+        </div>
+
+        <!-- ───── PRICING CARDS ───── -->
+        <div class="pricing-grid reveal">
+            <!-- Plano Básico -->
+            <div class="plan-card">
+                <div class="plan-strip"></div>
+                <div class="plan-badge">Básico</div>
+                <div class="plan-icon"><i class="fas fa-rocket"></i></div>
+                <div class="plan-name">Básico</div>
+                <div class="plan-price" data-mensal="49,90" data-anual="39,90">R$ 49,90 <span>/mês</span></div>
+                <div class="plan-period">ou R$ 478,80/ano</div>
+                <hr class="plan-divider" />
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> 100 documentos/mês</li>
+                    <li><i class="fas fa-check-circle"></i> 1 usuário</li>
+                    <li><i class="fas fa-check-circle"></i> 30 templates</li>
+                    <li><i class="fas fa-check-circle"></i> Assinatura digital</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> IA Avançada</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Integrações</li>
+                </ul>
+                <a href="checkout.html?plan=basico" class="plan-btn">Começar Grátis</a>
+            </div>
+
+            <!-- Plano Premium -->
+            <div class="plan-card premium">
+                <div class="plan-strip"></div>
+                <div class="plan-badge premium-badge"><i class="fas fa-crown"></i> Mais Popular</div>
+                <div class="plan-icon"><i class="fas fa-star"></i></div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-price" data-mensal="119,90" data-anual="95,90">R$ 119,90 <span>/mês</span></div>
+                <div class="plan-period">ou R$ 1.150,80/ano</div>
+                <hr class="plan-divider" />
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> 5.000 documentos/mês</li>
+                    <li><i class="fas fa-check-circle"></i> 5 usuários</li>
+                    <li><i class="fas fa-check-circle"></i> 150+ templates</li>
+                    <li><i class="fas fa-check-circle"></i> IA Avançada</li>
+                    <li><i class="fas fa-check-circle"></i> Integrações CRM</li>
+                    <li><i class="fas fa-check-circle"></i> Suporte prioritário</li>
+                </ul>
+                <a href="checkout.html?plan=premium" class="plan-btn premium-btn">Começar Agora</a>
+            </div>
+
+            <!-- Plano Profissional -->
+            <div class="plan-card">
+                <div class="plan-strip"></div>
+                <div class="plan-badge">Profissional</div>
+                <div class="plan-icon"><i class="fas fa-infinity"></i></div>
+                <div class="plan-name">Profissional</div>
+                <div class="plan-price" data-mensal="299,90" data-anual="239,90">R$ 299,90 <span>/mês</span></div>
+                <div class="plan-period">ou R$ 2.878,80/ano</div>
+                <hr class="plan-divider" />
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> Documentos <strong>ilimitados</strong></li>
+                    <li><i class="fas fa-check-circle"></i> Usuários <strong>ilimitados</strong></li>
+                    <li><i class="fas fa-check-circle"></i> Templates personalizados</li>
+                    <li><i class="fas fa-check-circle"></i> IA com fine-tuning</li>
+                    <li><i class="fas fa-check-circle"></i> API + Webhooks</li>
+                    <li><i class="fas fa-check-circle"></i> Gerente dedicado + 24/7</li>
+                </ul>
+                <a href="checkout.html?plan=profissional" class="plan-btn">Falar com Vendas</a>
+            </div>
+        </div>
+
+        <!-- ───── TRUST BAR ───── -->
+        <div class="trust-bar reveal">
+            <span><i class="fas fa-shield-alt"></i> SSL Seguro</span>
+            <span><i class="fas fa-lock"></i> LGPD & SOC 2</span>
+            <span><i class="fas fa-credit-card"></i> Pagamento seguro</span>
+            <span><i class="fas fa-undo-alt"></i> Reembolso em 7 dias</span>
+            <span><i class="fas fa-headset"></i> Suporte em português</span>
+        </div>
+    </div>
+
+    <!-- ───── COMPARISON TABLE ───── -->
+    <div class="comparison-section">
+        <div class="container reveal">
+            <h2 class="comparison-title">Compare todos os <span style="color:var(--orange);">recursos</span></h2>
+            <div style="overflow-x:auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Básico</th>
+                            <th class="highlight-col">Premium</th>
+                            <th>Profissional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Documentos por mês</td>
+                            <td>100</td>
+                            <td class="highlight-col">5.000</td>
+                            <td>Ilimitado</td>
+                        </tr>
+                        <tr>
+                            <td>Usuários</td>
+                            <td>1</td>
+                            <td class="highlight-col">5</td>
+                            <td>Ilimitado</td>
+                        </tr>
+                        <tr>
+                            <td>Templates</td>
+                            <td>30</td>
+                            <td class="highlight-col">150+</td>
+                            <td>Personalizados</td>
+                        </tr>
+                        <tr>
+                            <td>Assinatura digital</td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                            <td class="highlight-col"><span class="check-orange"><i class="fas fa-check-circle"></i></span></td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>IA Avançada</td>
+                            <td><span class="dash">—</span></td>
+                            <td class="highlight-col"><span class="check-orange"><i class="fas fa-check-circle"></i></span></td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>Integrações CRM</td>
+                            <td><span class="dash">—</span></td>
+                            <td class="highlight-col"><span class="check-orange"><i class="fas fa-check-circle"></i></span></td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>API & Webhooks</td>
+                            <td><span class="dash">—</span></td>
+                            <td class="highlight-col"><span class="dash">—</span></td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>Suporte</td>
+                            <td>E-mail</td>
+                            <td class="highlight-col">Prioritário</td>
+                            <td>Gerente dedicado 24/7</td>
+                        </tr>
+                        <tr>
+                            <td>Fine-tuning IA</td>
+                            <td><span class="dash">—</span></td>
+                            <td class="highlight-col"><span class="dash">—</span></td>
+                            <td><span class="check-green"><i class="fas fa-check-circle"></i></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ───── FAQ ───── -->
+    <div class="faq-section">
+        <div class="container reveal">
+            <div class="faq-header">
+                <h2>Dúvidas sobre os <span style="color:var(--orange);">planos</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item open">
+                    <div class="faq-q"><span>Posso trocar de plano depois?</span><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-a">Sim! Você pode fazer upgrade ou downgrade a qualquer momento. A diferença é calculada automaticamente e aplicada na fatura seguinte.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span>Como funciona o teste grátis?</span><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-a">Você tem 14 dias de acesso completo ao plano Premium, sem precisar de cartão de crédito. Ao final, escolha o plano ideal ou cancele sem custo.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span>Existe desconto para pagamento anual?</span><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-a">Sim! No plano anual você economiza 20% em relação ao valor mensal. A cobrança é feita uma vez ao ano, com renovação automática.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span>Quais formas de pagamento são aceitas?</span><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-a">Aceitamos cartões de crédito (Visa, Mastercard, Elo, Amex), PIX e boleto bancário. Para planos anuais, também oferecemos nota fiscal e faturamento.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span>Posso cancelar a qualquer momento?</span><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-a">Sim, sem multas ou burocracia. O cancelamento é feito em um clique dentro da plataforma. Seu acesso permanece até o fim do ciclo pago.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ───── CTA ───── -->
+    <div class="cta-final">
+        <div class="container reveal">
+            <h2>Pronto para transformar seus<br/>documentos?</h2>
+            <p>Junte-se a mais de 100 empresas que já economizam horas por semana com documentos inteligentes.</p>
+            <div class="cta-btns">
+                <a href="checkout.html?plan=premium" class="btn-cta-white">Começar com Premium <i class="fas fa-arrow-right"></i></a>
+                <a href="index.html#depoimentos" class="btn-cta-out"><i class="fas fa-users"></i> Ver casos de sucesso</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ───── FOOTER ───── -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo"><span class="logo-mark">HD</span>HubDocs</a>
+                    <p>A plataforma de documentos inteligente para empresas que valorizam eficiência, segurança e profissionalismo.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Produto</h5>
+                    <ul>
+                        <li><a href="#">Funcionalidades</a></li>
+                        <li><a href="#">Templates</a></li>
+                        <li><a href="#">Integrações</a></li>
+                        <li><a href="#">Assinatura Digital</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Empresa</h5>
+                    <ul>
+                        <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Parceiros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Suporte</h5>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">© 2026 HubDocs. Todos os direitos reservados.</div>
+                <div class="footer-legal">
+                    <a href="#">Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ───── TOGGLE MENSAL / ANUAL ─────
+        let isAnual = false;
+
+        function togglePricing() {
+            isAnual = !isAnual;
+            const toggle = document.getElementById('toggle-switch');
+            const lblMensal = document.getElementById('lbl-mensal');
+            const lblAnual = document.getElementById('lbl-anual');
+            const badge = document.getElementById('discount-badge');
+
+            if (isAnual) {
+                toggle.classList.add('active');
+                lblMensal.classList.remove('on');
+                lblAnual.classList.add('on');
+                badge.style.display = 'inline-block';
+            } else {
+                toggle.classList.remove('active');
+                lblMensal.classList.add('on');
+                lblAnual.classList.remove('on');
+                badge.style.display = 'inline-block';
+            }
+
+            // Atualiza preços
+            document.querySelectorAll('.plan-price').forEach(el => {
+                const valorMensal = el.getAttribute('data-mensal');
+                const valorAnual = el.getAttribute('data-anual');
+                const span = el.querySelector('span');
+                if (isAnual) {
+                    el.innerHTML = `R$ ${valorAnual} <span>/mês</span>`;
+                } else {
+                    el.innerHTML = `R$ ${valorMensal} <span>/mês</span>`;
+                }
+            });
+
+            // Atualiza período anual
+            const precosAnuais = ['478,80', '1.150,80', '2.878,80'];
+            const precosMensais = ['49,90', '119,90', '299,90'];
+            document.querySelectorAll('.plan-period').forEach((el, i) => {
+                if (isAnual) {
+                    el.textContent = `ou R$ ${(parseFloat(precosAnuais[i].replace(',',
+                        '.'))).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/ano`;
+                } else {
+                    const valorAnual = (parseFloat(precosMensais[i].replace(',', '.')) * 12).toLocaleString(
+                        'pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    el.textContent = `ou R$ ${valorAnual}/ano`;
+                }
+            });
+        }
+
+        // ───── FAQ ACCORDION ─────
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-q').addEventListener('click', () => {
+                document.querySelectorAll('.faq-item').forEach(x => {
+                    if (x !== item) x.classList.remove('open');
+                });
+                item.classList.toggle('open');
+            });
+        });
+
+        // ───── SCROLL REVEAL ─────
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('in');
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ───── SIMULAÇÃO DE CLIQUE NOS BOTÕES (APENAS VISUAL) ─────
+        document.querySelectorAll('.plan-btn, .btn-cta-white').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Permite navegação normal, mas se for # ou não tiver href, previne
+                const href = this.getAttribute('href');
+                if (!href || href === '#') {
+                    e.preventDefault();
+                    // Feedback visual
+                    this.style.transform = 'scale(0.96)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        alert(
+                            '🎉 Redirecionando para a página de checkout...\n\nEm produção, você seria levado para finalizar a assinatura.'
+                            );
+                    }, 200);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HubDocs — Finalizar Pagamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #F97316;
+            --orange-h: #EA580C;
+            --orange-d: #C2410C;
+            --orange-light: #FFEDD5;
+            --orange-pale: #FFF7ED;
+            --white: #ffffff;
+            --text: #0f0f0f;
+            --muted: #6B7280;
+            --muted2: #9CA3AF;
+            --border: rgba(0, 0, 0, 0.07);
+            --border-med: rgba(0, 0, 0, 0.12);
+            --r: 16px;
+            --r-sm: 10px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 12px 40px rgba(249, 115, 22, 0.10);
+            --green: #22C55E;
+            --red: #EF4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fafafa;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--orange);
+            border-radius: 4px;
+        }
+
+        /* ───── NAVBAR ───── */
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 36px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 900;
+            font-size: 1.08rem;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.03em;
+        }
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            background: var(--orange);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 900;
+            font-size: .76rem;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, .35);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .nav-link {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-link:hover {
+            color: var(--text);
+        }
+        .nav-link i {
+            margin-right: 4px;
+        }
+        .nav-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--orange-light);
+            border: 2px solid var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .7rem;
+            color: var(--orange);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .nav-avatar:hover {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* ───── STEPS ───── */
+        .steps-bar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            text-align: center;
+        }
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .73rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .65rem;
+            font-weight: 800;
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        .step-dot.done {
+            background: #22C55E;
+            color: #fff;
+        }
+        .step-dot.active {
+            background: var(--orange);
+            color: #fff;
+            box-shadow: 0 0 0 5px rgba(249, 115, 22, .2);
+            animation: pulse-step 2s infinite;
+        }
+        @keyframes pulse-step {
+            0%,
+            100% {
+                box-shadow: 0 0 0 5px rgba(249, 115, 22, .2);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(249, 115, 22, 0);
+            }
+        }
+        .step-line {
+            width: 28px;
+            height: 2px;
+            background: #d1d5db;
+            border-radius: 2px;
+        }
+        .step-line.done {
+            background: #22C55E;
+        }
+
+        /* ───── MAIN ───── */
+        .main-checkout {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px 60px;
+        }
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 28px;
+            width: 100%;
+            max-width: 1000px;
+            align-items: start;
+        }
+
+        /* ───── FORM CARD ───── */
+        .form-card {
+            background: #fff;
+            border-radius: var(--r);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 32px 30px;
+            transition: all .3s;
+        }
+        .form-card h2 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-card h2 i {
+            color: var(--orange);
+            font-size: 1.2rem;
+        }
+        .form-sub {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Métodos */
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .method-btn {
+            flex: 1;
+            min-width: 90px;
+            padding: 12px 14px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--border-med);
+            background: #fff;
+            cursor: pointer;
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--muted);
+            transition: all .25s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+        .method-btn i {
+            font-size: 1.2rem;
+            color: var(--muted2);
+            transition: color .25s;
+        }
+        .method-btn:hover {
+            border-color: var(--orange);
+            background: var(--orange-pale);
+        }
+        .method-btn.active {
+            border-color: var(--orange);
+            background: var(--orange-pale);
+            color: var(--text);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, .1);
+        }
+        .method-btn.active i {
+            color: var(--orange);
+        }
+
+        .method-panel {
+            display: none;
+            animation: fadeUp .3s ease;
+        }
+        .method-panel.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fields */
+        .field-group {
+            margin-bottom: 18px;
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .field-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+            letter-spacing: -0.01em;
+        }
+        .inp-wrap {
+            position: relative;
+        }
+        .inp-wrap i.inp-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted2);
+            font-size: .8rem;
+            pointer-events: none;
+            transition: color .2s;
+        }
+        .inp-wrap:focus-within i.inp-icon {
+            color: var(--orange);
+        }
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 40px 12px 38px;
+            border: 1.5px solid var(--border-med);
+            border-radius: var(--r-sm);
+            font-size: .84rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: #fff;
+            outline: none;
+            transition: all .2s;
+            appearance: none;
+        }
+        input::placeholder {
+            color: var(--muted2);
+        }
+        input:focus,
+        select:focus {
+            border-color: var(--orange);
+            background: var(--orange-pale);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, .08);
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+        .card-brands {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1.5rem;
+            color: var(--muted2);
+            align-items: center;
+        }
+        .card-brands i {
+            transition: color .2s;
+        }
+        .card-brands i.active-brand {
+            color: var(--text);
+        }
+
+        /* PIX panel */
+        .pix-qr-placeholder {
+            background: #f9fafb;
+            border: 2px dashed var(--border-med);
+            border-radius: var(--r);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .pix-qr-placeholder i {
+            font-size: 4rem;
+            color: var(--orange);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .pix-key-copy {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .pix-key-text {
+            background: #f3f4f6;
+            padding: 10px 16px;
+            border-radius: var(--r-sm);
+            font-size: .8rem;
+            font-family: monospace;
+            word-break: break-all;
+            border: 1px solid var(--border);
+            user-select: all;
+        }
+        .btn-copy {
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: .78rem;
+            transition: all .2s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+        .btn-copy:hover {
+            background: var(--orange-h);
+        }
+
+        /* Boleto panel */
+        .boleto-info {
+            background: #f9fafb;
+            border-radius: var(--r);
+            padding: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .boleto-info i {
+            font-size: 2.5rem;
+            color: var(--muted2);
+            margin-bottom: 10px;
+        }
+
+        /* Checkbox */
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: .78rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .checkbox-row input {
+            margin-top: 2px;
+            accent-color: var(--orange);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .checkbox-row a {
+            color: var(--orange);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .checkbox-row a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--orange);
+            color: #fff;
+            font-size: .95rem;
+            font-weight: 800;
+            border: none;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: all .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+            box-shadow: 0 6px 24px rgba(249, 115, 22, .35);
+        }
+        .btn-submit:hover {
+            background: var(--orange-h);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(249, 115, 22, .45);
+        }
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        .btn-submit.loading {
+            pointer-events: none;
+            opacity: .8;
+        }
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            display: none;
+        }
+        .btn-submit.loading .spinner {
+            display: block;
+        }
+        .btn-submit.loading .btn-text {
+            display: none;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 14px;
+            font-size: .72rem;
+            color: var(--muted2);
+            font-weight: 500;
+        }
+        .secure-note i {
+            color: var(--green);
+        }
+
+        /* ───── SIDEBAR ───── */
+        .sidebar-card {
+            background: #fff;
+            border-radius: var(--r);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 28px 24px;
+            position: sticky;
+            top: 90px;
+        }
+        .sidebar-card h3 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sidebar-card h3 i {
+            color: var(--orange);
+        }
+        .plan-summary-name {
+            font-weight: 800;
+            color: var(--text);
+            font-size: .95rem;
+            margin-bottom: 2px;
+        }
+        .plan-summary-period {
+            font-size: .75rem;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem;
+            padding: 8px 0;
+            color: var(--muted);
+        }
+        .summary-line.total {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text);
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+        .summary-line .price {
+            font-weight: 700;
+            color: var(--text);
+        }
+        .summary-line.total .price {
+            font-size: 1.2rem;
+            color: var(--orange);
+        }
+        .discount-tag {
+            background: #ECFDF5;
+            color: #059669;
+            font-size: .68rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 50px;
+            margin-left: 8px;
+        }
+        .coupon-area {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+        }
+        .coupon-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-med);
+            border-radius: var(--r-sm);
+            font-size: .8rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+        .coupon-area input:focus {
+            border-color: var(--orange);
+        }
+        .btn-coupon {
+            padding: 10px 16px;
+            background: transparent;
+            border: 1.5px solid var(--border-med);
+            border-radius: var(--r-sm);
+            font-weight: 700;
+            font-size: .78rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: all .2s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+        .btn-coupon:hover {
+            border-color: var(--orange);
+            background: var(--orange-pale);
+        }
+        .coupon-msg {
+            font-size: .7rem;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* ───── SUCCESS OVERLAY ───── */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .success-overlay.show {
+            display: flex;
+        }
+        .success-modal {
+            background: #fff;
+            border-radius: var(--r);
+            padding: 48px 36px;
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .2);
+            animation: popIn .4s ease;
+        }
+        @keyframes popIn {
+            from {
+                transform: scale(.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: #ECFDF5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: #059669;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, .2);
+        }
+        .success-modal h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+        .success-modal p {
+            font-size: .88rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        .btn-dashboard {
+            display: inline-block;
+            padding: 13px 28px;
+            background: var(--orange);
+            color: #fff;
+            font-weight: 700;
+            border-radius: var(--r-sm);
+            text-decoration: none;
+            transition: all .3s;
+            font-size: .9rem;
+        }
+        .btn-dashboard:hover {
+            background: var(--orange-h);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(249, 115, 22, .35);
+        }
+
+        /* ───── RESPONSIVE ───── */
+        @media (max-width: 860px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .sidebar-card {
+                position: static;
+                order: -1;
+            }
+            .navbar {
+                padding: 0 18px;
+            }
+            .field-row,
+            .field-row-3 {
+                grid-template-columns: 1fr;
+            }
+            .payment-methods {
+                flex-direction: column;
+            }
+            .method-btn {
+                flex-direction: row;
+                justify-content: center;
+            }
+            .steps-container {
+                gap: 4px;
+            }
+            .step-line {
+                width: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ───── NAVBAR ───── -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">HD</span>
+            HubDocs
+        </a>
+        <div class="nav-right">
+            <a href="planos.html" class="nav-link"><i class="fas fa-arrow-left"></i> Voltar</a>
+            <div class="nav-avatar" title="Minha conta">JD</div>
+        </div>
+    </nav>
+
+    <!-- ───── STEPS ───── -->
+    <div class="steps-bar">
+        <div class="steps-container">
+            <span class="step-indicator">
+                <span class="step-dot done"><i class="fas fa-check"></i></span> Cadastro
+            </span>
+            <span class="step-line done"></span>
+            <span class="step-indicator">
+                <span class="step-dot done"><i class="fas fa-check"></i></span> Escolha do plano
+            </span>
+            <span class="step-line done"></span>
+            <span class="step-indicator">
+                <span class="step-dot active">3</span> Pagamento
+            </span>
+        </div>
+    </div>
+
+    <!-- ───── MAIN ───── -->
+    <div class="main-checkout">
+        <div class="checkout-grid">
+
+            <!-- LEFT: FORM -->
+            <div class="form-card" id="form-card">
+                <h2><i class="fas fa-lock"></i> Finalizar Pagamento</h2>
+                <p class="form-sub">Seus dados estão protegidos com criptografia AES-256 e conformidade LGPD.</p>
+
+                <!-- Métodos -->
+                <div class="payment-methods">
+                    <button class="method-btn active" data-method="card">
+                        <i class="far fa-credit-card"></i> Cartão
+                    </button>
+                    <button class="method-btn" data-method="pix">
+                        <i class="fas fa-qrcode"></i> PIX
+                    </button>
+                    <button class="method-btn" data-method="boleto">
+                        <i class="fas fa-barcode"></i> Boleto
+                    </button>
+                </div>
+
+                <!-- Painel Cartão -->
+                <div class="method-panel active" id="panel-card">
+                    <form id="form-card-payment" onsubmit="processPayment(event, 'cartão')">
+                        <div class="field-group">
+                            <label>Número do Cartão</label>
+                            <div class="inp-wrap">
+                                <i class="fas fa-credit-card inp-icon"></i>
+                                <input type="tel" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" required autocomplete="cc-number" oninput="formatCardNumber(this)" />
+                            </div>
+                            <div class="card-brands">
+                                <i class="fab fa-cc-visa" id="brand-visa"></i>
+                                <i class="fab fa-cc-mastercard" id="brand-master"></i>
+                                <i class="fab fa-cc-amex" id="brand-amex"></i>
+                                <i class="fab fa-cc-elo" id="brand-elo"></i>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Validade</label>
+                                <div class="inp-wrap">
+                                    <i class="far fa-calendar-alt inp-icon"></i>
+                                    <input type="tel" id="card-expiry" placeholder="MM/AA" maxlength="5" required oninput="formatExpiry(this)" />
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <label>CVV</label>
+                                <div class="inp-wrap">
+                                    <i class="fas fa-shield-alt inp-icon"></i>
+                                    <input type="tel" id="card-cvv" placeholder="123" maxlength="4" required autocomplete="cc-csc" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label>Nome no Cartão</label>
+                            <div class="inp-wrap">
+                                <i class="fas fa-user inp-icon"></i>
+                                <input type="text" id="card-name" placeholder="Como aparece no cartão" required autocomplete="cc-name" />
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label>CPF/CNPJ do titular</label>
+                            <div class="inp-wrap">
+                                <i class="fas fa-id-card inp-icon"></i>
+                                <input type="tel" id="card-doc" placeholder="000.000.000-00" required oninput="formatDoc(this)" />
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Parcelas</label>
+                                <select id="installments">
+                                    <option value="1">1x sem juros</option>
+                                    <option value="2">2x sem juros</option>
+                                    <option value="3">3x sem juros</option>
+                                    <option value="4">4x sem juros</option>
+                                    <option value="5">5x sem juros</option>
+                                    <option value="6">6x sem juros</option>
+                                    <option value="7">7x com juros</option>
+                                    <option value="8">8x com juros</option>
+                                    <option value="9">9x com juros</option>
+                                    <option value="10">10x com juros</option>
+                                    <option value="11">11x com juros</option>
+                                    <option value="12">12x com juros</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="save-card" checked />
+                            <label for="save-card">Salvar cartão para próximas compras (dados criptografados)</label>
+                        </div>
+                        <button type="submit" class="btn-submit" id="btn-card">
+                            <div class="spinner"></div>
+                            <span class="btn-text">Pagar com Cartão &nbsp;<i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Painel PIX -->
+                <div class="method-panel" id="panel-pix">
+                    <div class="pix-qr-placeholder">
+                        <i class="fas fa-qrcode"></i>
+                        <p style="font-weight:700;margin-bottom:6px;">QR Code gerado automaticamente</p>
+                        <p style="font-size:.78rem;color:var(--muted);">Abra o app do seu banco e escaneie o código</p>
+                    </div>
+                    <div class="pix-key-copy">
+                        <span class="pix-key-text" id="pix-key">hubdocs.pagamento@gateway.com.br</span>
+                        <button class="btn-copy" onclick="copyPixKey()"><i class="far fa-copy"></i> Copiar</button>
+                    </div>
+                    <p style="font-size:.72rem;color:var(--muted);margin-top:10px;text-align:center;">O QR Code expira em 30 minutos. Após o pagamento, a liberação é automática.</p>
+                </div>
+
+                <!-- Painel Boleto -->
+                <div class="method-panel" id="panel-boleto">
+                    <div class="boleto-info">
+                        <i class="fas fa-barcode"></i>
+                        <p style="font-weight:700;margin-bottom:4px;">Boleto bancário</p>
+                        <p style="font-size:.78rem;color:var(--muted);">Vencimento em 3 dias úteis. Compensação em até 48h.</p>
+                    </div>
+                    <button class="btn-submit" onclick="processPayment(event, 'boleto')" id="btn-boleto">
+                        <div class="spinner"></div>
+                        <span class="btn-text">Gerar Boleto &nbsp;<i class="fas fa-file-invoice"></i></span>
+                    </button>
+                </div>
+
+                <div class="secure-note">
+                    <i class="fas fa-lock"></i> Ambiente seguro · SSL 256 bits · LGPD
+                </div>
+            </div>
+
+            <!-- RIGHT: SIDEBAR -->
+            <div class="sidebar-card" id="sidebar">
+                <h3><i class="fas fa-shopping-bag"></i> Resumo do Pedido</h3>
+                <div class="plan-summary-name" id="summary-plan-name">Plano Premium</div>
+                <div class="plan-summary-period" id="summary-period">Cobrança mensal</div>
+
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span class="price" id="summary-subtotal">R$ 119,90</span>
+                </div>
+                <div class="summary-line" id="discount-line" style="display:none;">
+                    <span>Desconto <span class="discount-tag" id="discount-label">-20% anual</span></span>
+                    <span class="price" style="color:#059669;" id="summary-discount">-R$ 0,00</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total</span>
+                    <span class="price" id="summary-total">R$ 119,90</span>
+                </div>
+
+                <div class="coupon-area">
+                    <input type="text" id="coupon-input" placeholder="Cupom de desconto" />
+                    <button class="btn-coupon" onclick="applyCoupon()">Aplicar</button>
+                </div>
+                <div class="coupon-msg" id="coupon-msg" style="color:var(--green);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ───── SUCCESS OVERLAY ───── -->
+    <div class="success-overlay" id="success-overlay">
+        <div class="success-modal">
+            <div class="success-icon"><i class="fas fa-check"></i></div>
+            <h2>Pagamento Confirmado!</h2>
+            <p>Seu plano <strong id="success-plan-name">Premium</strong> foi ativado com sucesso. Você receberá um e-mail com os detalhes da assinatura.</p>
+            <a href="dashboard.html" class="btn-dashboard">Ir para o Dashboard &nbsp;<i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // ───── DETECT PLAN FROM URL ─────
+        const urlParams = new URLSearchParams(window.location.search);
+        const planParam = urlParams.get('plan') || 'premium'; // default
+
+        const planData = {
+            'basico': {
+                name: 'Básico',
+                price: 49.90,
+                period: 'mensal',
+                features: '100 docs/mês, 1 usuário'
+            },
+            'premium': {
+                name: 'Premium',
+                price: 119.90,
+                period: 'mensal',
+                features: '5.000 docs/mês, 5 usuários'
+            },
+            'profissional': {
+                name: 'Profissional',
+                price: 299.90,
+                period: 'mensal',
+                features: 'Ilimitado, API, Gerente'
+            }
+        };
+
+        const currentPlan = planData[planParam] || planData['premium'];
+        let currentTotal = currentPlan.price;
+        let discountApplied = 0;
+        let isAnnual = false; // Poderia ser herdado da página anterior via URL, mas vamos simular
+
+        // Atualiza sidebar
+        function updateSidebar() {
+            document.getElementById('summary-plan-name').textContent = 'Plano ' + currentPlan.name;
+            document.getElementById('summary-period').textContent = isAnnual ? 'Cobrança anual (20% off)' :
+                'Cobrança mensal';
+            document.getElementById('summary-subtotal').textContent = 'R$ ' + currentPlan.price.toFixed(2).replace('.',
+                ',');
+
+            if (isAnnual || discountApplied > 0) {
+                document.getElementById('discount-line').style.display = 'flex';
+                const discountValue = isAnnual ? currentPlan.price * 0.2 : discountApplied;
+                document.getElementById('summary-discount').textContent = '-R$ ' + discountValue.toFixed(2).replace('.',
+                    ',');
+                if (isAnnual) {
+                    document.getElementById('discount-label').textContent = '-20% anual';
+                } else {
+                    document.getElementById('discount-label').textContent = 'Cupom';
+                }
+                currentTotal = currentPlan.price - discountValue;
+                if (discountApplied > 0 && isAnnual) {
+                    // ambos
+                    currentTotal = currentPlan.price * 0.8 - discountApplied;
+                    document.getElementById('summary-discount').textContent = '-R$ ' + (currentPlan.price * 0.2 +
+                        discountApplied).toFixed(2).replace('.', ',');
+                }
+            } else {
+                document.getElementById('discount-line').style.display = 'none';
+                currentTotal = currentPlan.price;
+            }
+            document.getElementById('summary-total').textContent = 'R$ ' + Math.max(0, currentTotal).toFixed(2).replace('.',
+                ',');
+        }
+        updateSidebar();
+
+        // ───── METHOD TABS ─────
+        const methodBtns = document.querySelectorAll('.method-btn');
+        const panels = {
+            card: document.getElementById('panel-card'),
+            pix: document.getElementById('panel-pix'),
+            boleto: document.getElementById('panel-boleto')
+        };
+
+        methodBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                methodBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const method = btn.getAttribute('data-method');
+                Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
+                panels[method].classList.add('active');
+            });
+        });
+
+        // ───── FORMAT HELPERS ─────
+        function formatCardNumber(input) {
+            let val = input.value.replace(/\D/g, '');
+            val = val.substring(0, 16);
+            val = val.replace(/(\d{4})(?=\d)/g, '$1 ');
+            input.value = val;
+            updateCardBrand(val);
+        }
+
+        function updateCardBrand(val) {
+            const clean = val.replace(/\s/g, '');
+            const brands = {
+                visa: document.getElementById('brand-visa'),
+                master: document.getElementById('brand-master'),
+                amex: document.getElementById('brand-amex'),
+                elo: document.getElementById('brand-elo')
+            };
+            // Reset
+            Object.values(brands).forEach(el => el.classList.remove('active-brand'));
+            if (clean.startsWith('4')) brands.visa.classList.add('active-brand');
+            else if (clean.startsWith('5')) brands.master.classList.add('active-brand');
+            else if (clean.startsWith('34') || clean.startsWith('37')) brands.amex.classList.add('active-brand');
+            else if (clean.startsWith('6')) brands.elo.classList.add('active-brand');
+        }
+
+        function formatExpiry(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length >= 2) val = val.substring(0, 2) + '/' + val.substring(2, 4);
+            input.value = val.substring(0, 5);
+        }
+
+        function formatDoc(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length <= 11) {
+                val = val.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            } else {
+                val = val.substring(0, 14);
+                val = val.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+            }
+            input.value = val;
+        }
+
+        // ───── COPY PIX ─────
+        function copyPixKey() {
+            const key = document.getElementById('pix-key').textContent;
+            navigator.clipboard.writeText(key).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="far fa-copy"></i> Copiar';
+                }, 2000);
+            });
+        }
+
+        // ───── COUPON ─────
+        function applyCoupon() {
+            const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+            const msg = document.getElementById('coupon-msg');
+            if (code === 'HUB10') {
+                discountApplied = currentPlan.price * 0.1;
+                msg.textContent = 'Cupom HUB10 aplicado! 10% de desconto.';
+                msg.style.color = '#059669';
+                updateSidebar();
+            } else if (code === '') {
+                discountApplied = 0;
+                msg.textContent = '';
+                updateSidebar();
+            } else {
+                msg.textContent = 'Cupom inválido.';
+                msg.style.color = '#EF4444';
+                discountApplied = 0;
+                updateSidebar();
+            }
+        }
+
+        // ───── PROCESS PAYMENT ─────
+        function processPayment(e, method) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const btn = document.getElementById(method === 'boleto' ? 'btn-boleto' : 'btn-card');
+            if (btn) {
+                btn.classList.add('loading');
+            }
+
+            // Simula processamento
+            setTimeout(() => {
+                if (btn) btn.classList.remove('loading');
+                // Exibe sucesso
+                document.getElementById('success-plan-name').textContent = currentPlan.name;
+                document.getElementById('success-overlay').classList.add('show');
+            }, 2000);
+        }
+
+        // Também para o formulário de cartão
+        document.getElementById('form-card-payment')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            processPayment(e, 'cartão');
+        });
+
+        // Fechar overlay ao clicar fora (não no modal)
+        document.getElementById('success-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                // Opcional: não fechar, mas redirecionar
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
